@@ -1,5 +1,5 @@
-const apiKey = '1b3d23eb2873fbdc9f708e9519e71349';
-const city = 'Metro Manila'; 
+const apiKey = 'cab44398ddef75ce4e9e515716b48592'; // Replace with your actual API key
+const city = 'New York'; // You can change the city here
 
 // Fetch weather data from OpenWeatherMap API
 fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`)
@@ -11,6 +11,9 @@ fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}
             <h2>Weather in ${city}</h2>
             <p>Temperature: ${Math.round(data.main.temp - 273.15)}°C</p>
             <p>Description: ${data.weather[0].description}</p>
+            <p>Humidity: ${data.main.humidity}%</p>
+            <p>Wind Speed: ${data.wind.speed} m/s</p>
+            <p>Visibility: ${data.visibility / 1000} km</p>
         `;
         dataSection.innerHTML = weatherInfo;
     })
