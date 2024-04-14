@@ -1,7 +1,5 @@
-const apiKey = 'cab44398ddef75ce4e9e515716b48592'; // Replace with your actual API key
-const city = 'New York'; // You can change the city here
-
-// Fetch weather data from OpenWeatherMap API
+const apiKey = 'cab44398ddef75ce4e9e515716b48592'; 
+const city = 'New York';
 fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`)
     .then(response => {
         if (!response.ok) {
@@ -10,8 +8,7 @@ fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}
         return response.json();
     })
     .then(data => {
-        console.log(data); // Log the response to check if data is received
-        // Display weather data on the page
+        console.log(data); 
         const dataSection = document.getElementById('data-section');
         const iconCode = data.weather[0].icon;
         const iconUrl = `http://openweathermap.org/img/w/${iconCode}.png`;
