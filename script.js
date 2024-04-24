@@ -1,8 +1,7 @@
 const weatherApiKey = 'cab44398ddef75ce4e9e515716b48592';
 const weatherCity = 'New York';
-const recipeApiKey = '49c4e5b7821441d6b6faae051fa5dfec'; 
+const recipeApiKey = '49c4e5b7821441d6b6faae051fa5dfec';
 
-// Fetch weather data
 fetch(`https://api.openweathermap.org/data/2.5/weather?q=${weatherCity}&appid=${weatherApiKey}`)
     .then(response => {
         if (!response.ok) {
@@ -35,7 +34,7 @@ function searchRecipes() {
         return;
     }
 
-    const maxResults = 5;
+    const maxResults = 9; 
 
     fetch(`https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredientInput}&number=${maxResults}&apiKey=${recipeApiKey}`)
         .then(response => {
@@ -47,6 +46,7 @@ function searchRecipes() {
         .then(recipeData => {
             console.log(recipeData);
 
+            // Display recipe information
             const recipeSection = document.getElementById('recipe-section');
             let recipeHTML = '<h2>Recipes</h2>';
             recipeHTML += '<div class="recipe-container">';
