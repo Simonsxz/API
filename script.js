@@ -1,7 +1,8 @@
 const weatherApiKey = 'cab44398ddef75ce4e9e515716b48592';
 const weatherCity = 'New York';
-const recipeApiKey = '49c4e5b7821441d6b6faae051fa5dfec';
+const recipeApiKey = '49c4e5b7821441d6b6faae051fa5dfec'; 
 
+// Fetch weather data
 fetch(`https://api.openweathermap.org/data/2.5/weather?q=${weatherCity}&appid=${weatherApiKey}`)
     .then(response => {
         if (!response.ok) {
@@ -45,11 +46,13 @@ function searchRecipes() {
         })
         .then(recipeData => {
             console.log(recipeData);
+
             const recipeSection = document.getElementById('recipe-section');
             let recipeHTML = '<h2>Recipes</h2>';
+            recipeHTML += '<div class="recipe-container">';
             recipeData.forEach(recipe => {
                 recipeHTML += `
-                    <div class="recipe">
+                    <div class="recipe-card">
                         <h3>${recipe.title}</h3>
                         <img src="${recipe.image}" alt="${recipe.title}">
                         <p>Missing Ingredients: ${recipe.missedIngredients.length}</p>
@@ -57,6 +60,7 @@ function searchRecipes() {
                     </div>
                 `;
             });
+            recipeHTML += '</div>';
             recipeSection.innerHTML = recipeHTML;
         })
         .catch(error => console.error('Error fetching recipe data:', error));
