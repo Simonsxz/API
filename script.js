@@ -34,7 +34,7 @@ fetch(`https://api.openweathermap.org/data/2.5/weather?q=${weatherCity}&appid=${
             return;
         }
     
-        const maxResults = 9; 
+        const maxResults = 9;
     
         fetch(`https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredientInput}&number=${maxResults}&apiKey=${recipeApiKey}`)
             .then(response => {
@@ -47,7 +47,7 @@ fetch(`https://api.openweathermap.org/data/2.5/weather?q=${weatherCity}&appid=${
                 console.log(recipeData);
     
                 // Display recipe information
-                const recipesSection = document.getElementById('recipes'); // Change to recipes section
+                const recipesSection = document.getElementById('recipes');
                 let recipeHTML = '<h2>Recipes</h2>';
                 recipeHTML += '<div class="recipe-container">';
                 recipeData.forEach(recipe => {
@@ -55,13 +55,18 @@ fetch(`https://api.openweathermap.org/data/2.5/weather?q=${weatherCity}&appid=${
                         <div class="recipe-card">
                             <h3>${recipe.title}</h3>
                             <img src="${recipe.image}" alt="${recipe.title}">
-                            <p>Missing Ingredients: ${recipe.missedIngredients.length}</p>
-                            <p>Used Ingredients: ${recipe.usedIngredients.length}</p>
+                            <p>Missing Ingredients: ${getIngredientNames(recipe.missedIngredients)}</p>
+                            <p>Used Ingredients: ${getIngredientNames(recipe.usedIngredients)}</p>
                         </div>
                     `;
                 });
                 recipeHTML += '</div>';
-                recipesSection.innerHTML = recipeHTML; // Append to recipes section
+                recipesSection.innerHTML = recipeHTML;
             })
             .catch(error => console.error('Error fetching recipe data:', error));
     }
+    
+    function getIngredientNames(ingredients) {
+        return ingredients.map(ingredient => ingredient.name).join(', ');
+    }
+    
