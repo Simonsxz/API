@@ -27,41 +27,41 @@ fetch(`https://api.openweathermap.org/data/2.5/weather?q=${weatherCity}&appid=${
     })
     .catch(error => console.error('Error fetching weather data:', error));
 
-function searchRecipes() {
-    const ingredientInput = document.getElementById('ingredient-input').value.trim();
-    if (ingredientInput === '') {
-        alert('Please enter an ingredient.');
-        return;
+    function searchRecipes() {
+        const ingredientInput = document.getElementById('ingredient-input').value.trim();
+        if (ingredientInput === '') {
+            alert('Please enter an ingredient.');
+            return;
+        }
+    
+        const maxResults = 9; 
+    
+        fetch(`https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredientInput}&number=${maxResults}&apiKey=${recipeApiKey}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(recipeData => {
+                console.log(recipeData);
+    
+                // Display recipe information
+                const recipesSection = document.getElementById('recipes'); // Change to recipes section
+                let recipeHTML = '<h2>Recipes</h2>';
+                recipeHTML += '<div class="recipe-container">';
+                recipeData.forEach(recipe => {
+                    recipeHTML += `
+                        <div class="recipe-card">
+                            <h3>${recipe.title}</h3>
+                            <img src="${recipe.image}" alt="${recipe.title}">
+                            <p>Missing Ingredients: ${recipe.missedIngredients.length}</p>
+                            <p>Used Ingredients: ${recipe.usedIngredients.length}</p>
+                        </div>
+                    `;
+                });
+                recipeHTML += '</div>';
+                recipesSection.innerHTML = recipeHTML; // Append to recipes section
+            })
+            .catch(error => console.error('Error fetching recipe data:', error));
     }
-
-    const maxResults = 9; 
-
-    fetch(`https://api.spoonacular.com/recipes/findByIngredients?ingredients=${ingredientInput}&number=${maxResults}&apiKey=${recipeApiKey}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(recipeData => {
-            console.log(recipeData);
-
-            // Display recipe information
-            const recipeSection = document.getElementById('recipe-section');
-            let recipeHTML = '<h2>Recipes</h2>';
-            recipeHTML += '<div class="recipe-container">';
-            recipeData.forEach(recipe => {
-                recipeHTML += `
-                    <div class="recipe-card">
-                        <h3>${recipe.title}</h3>
-                        <img src="${recipe.image}" alt="${recipe.title}">
-                        <p>Missing Ingredients: ${recipe.missedIngredients.length}</p>
-                        <p>Used Ingredients: ${recipe.usedIngredients.length}</p>
-                    </div>
-                `;
-            });
-            recipeHTML += '</div>';
-            recipeSection.innerHTML = recipeHTML;
-        })
-        .catch(error => console.error('Error fetching recipe data:', error));
-}
