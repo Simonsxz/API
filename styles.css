@@ -61,6 +61,7 @@ button:hover {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+    background-color: #ccc;
 }
 
 .recipe-card {
@@ -75,7 +76,7 @@ button:hover {
 
 .recipe-card img {
     width: 100%;
-    border-radius: 5px;
+    border-radius: 10px;
 }
 
 .recipe-card h3 {
