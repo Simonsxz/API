@@ -27,6 +27,11 @@ fetch(`https://api.openweathermap.org/data/2.5/weather?q=${weatherCity}&appid=${
     })
     .catch(error => console.error('Error fetching weather data:', error));
 
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchButton = document.getElementById('search-button');
+        searchButton.addEventListener('click', searchRecipes);
+    });
+    
     function searchRecipes() {
         const ingredientInput = document.getElementById('ingredient-input').value.trim();
         if (ingredientInput === '') {
@@ -55,8 +60,9 @@ fetch(`https://api.openweathermap.org/data/2.5/weather?q=${weatherCity}&appid=${
                         <div class="recipe-card">
                             <h3>${recipe.title}</h3>
                             <img src="${recipe.image}" alt="${recipe.title}">
-                            <p>Missing Ingredients: ${getIngredientNames(recipe.missedIngredients)}</p>
-                            <p>Used Ingredients: ${getIngredientNames(recipe.usedIngredients)}</p>
+                            <p>Missing Ingredients: ${getIngredientInfo(recipe.missedIngredients)}</p>
+                            <p>Used Ingredients: ${getIngredientInfo(recipe.usedIngredients)}</p>
+                            <p>Unused Ingredients: ${getUnusedIngredients(recipe.unusedIngredients)}</p>
                         </div>
                     `;
                 });
@@ -66,7 +72,27 @@ fetch(`https://api.openweathermap.org/data/2.5/weather?q=${weatherCity}&appid=${
             .catch(error => console.error('Error fetching recipe data:', error));
     }
     
-    function getIngredientNames(ingredients) {
-        return ingredients.map(ingredient => ingredient.name).join(', ');
+    function getIngredientInfo(ingredients) {
+        return ingredients.map(ingredient => {
+            if (!ingredient.amount) return ingredient.name;
+            return `${formatAmount(ingredient.amount, ingredient.unit)} of ${ingredient.name}`;
+        }).join(', ');
+    }
+    
+    function formatAmount(amount, unit) {
+        if (!amount) return '';
+        if (Number.isInteger(amount)) {
+            return `${amount} ${unit}`;
+        } else {
+            return `${amount} ${unit}`;
+        }
+    }
+    
+    function getUnusedIngredients(ingredients) {
+        if (ingredients.length === 0) {
+            return 'None';
+        } else {
+            return getIngredientInfo(ingredients);
+        }
     }
     
